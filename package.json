@@ -1,0 +1,24 @@
+{
+  "name": "bartender",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Interactive cocktail recipes (IBA official list) with a REST API, an MCP server and a web app.",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w @bartender/core && npm run build -w @bartender/api -w @bartender/mcp -w @bartender/web",
+    "dev": "npm run dev -w @bartender/api & npm run dev -w @bartender/web; wait",
+    "dev:api": "npm run dev -w @bartender/api",
+    "dev:web": "npm run dev -w @bartender/web",
+    "dev:mcp": "npm run dev -w @bartender/mcp",
+    "start": "npm run start -w @bartender/api",
+    "test": "npm run test -w @bartender/core",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run typecheck"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
