@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { CATEGORY_LABELS, computeDiagram, formatAmount, getGlass, recipes, toMl } from "@bartender/core";
 import GlassDiagram from "../components/GlassDiagram";
+import MakeAnimation from "../components/MakeAnimation";
 import { usePreferences } from "../preferences";
 
 const METHOD_LABEL: Record<string, string> = {
@@ -184,6 +185,13 @@ export default function CocktailPage() {
           <p className="muted small">
             About {Math.round(totalMl)} ml before dilution{servings > 1 ? ` for ${servings} drinks` : ""}. Garnish: {recipe.garnish}.
           </p>
+
+          {recipe.id === "aviation" && (
+            <>
+              <h2>Watch it being made</h2>
+              <MakeAnimation recipe={recipe} />
+            </>
+          )}
 
           <div className="panel-head">
             <h2>Method</h2>

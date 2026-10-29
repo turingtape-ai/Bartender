@@ -109,7 +109,8 @@ function wallPoints(profile: ProfilePoint[], yBottom: number, yTop: number, side
   return pts;
 }
 
-function bandPolygon(profile: ProfilePoint[], yBottom: number, yTop: number): string {
+/** Polygon (SVG `points`) of the liquid between two heights, following the inner wall. */
+export function bandPolygon(profile: ProfilePoint[], yBottom: number, yTop: number): string {
   const left = wallPoints(profile, yBottom, yTop, -1);
   const right = wallPoints(profile, yBottom, yTop, 1).reverse();
   return [...left, ...right].map(([x, y]) => `${fmt(x)},${fmt(y)}`).join(" ");

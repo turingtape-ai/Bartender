@@ -628,6 +628,40 @@ a.card:hover {
   padding: 0;
 }
 
+/* Make animation */
+.make-animation {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+  box-shadow: var(--shadow);
+  padding: 0.8rem 1rem 1rem;
+  margin-bottom: 0.5rem;
+}
+.make-animation .scene {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.make-animation .scene text {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+.make-animation .caption {
+  text-align: center;
+  font-family: ui-serif, Georgia, serif;
+  font-size: 1.15rem;
+  min-height: 1.6em;
+  margin: 0.4rem 0 0.6rem;
+}
+.make-animation .controls {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.make-animation .controls input[type="range"] {
+  flex: 1;
+  accent-color: var(--accent);
+}
+
 /* Glasses */
 .glasses-grid {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
