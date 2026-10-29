@@ -90,6 +90,16 @@ describe("diagram", () => {
     expect(d.ice).toHaveLength(0);
   });
 
+  it("shows a neat pour low in a tumbler and a shaken drink high in a coupe", () => {
+    const sazerac = computeDiagram(recipes.get("sazerac")!);
+    const profile = sazerac.profile;
+    const span = profile[0].y - profile[profile.length - 1].y;
+    expect((profile[0].y - sazerac.liquidTopY) / span).toBeLessThan(0.45);
+    const aviation = computeDiagram(recipes.get("aviation")!);
+    const p2 = aviation.profile;
+    expect((p2[0].y - aviation.liquidTopY) / (p2[0].y - p2[p2.length - 1].y)).toBeGreaterThan(0.6);
+  });
+
   it("renders every recipe to SVG", () => {
     for (const r of IBA_RECIPES) {
       const svg = diagramToSvg(computeDiagram(r));

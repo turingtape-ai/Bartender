@@ -146,6 +146,9 @@ export default function CocktailPage() {
                     <Link to={`/?q=${encodeURIComponent(ing.name)}`} onClick={(e) => e.stopPropagation()}>
                       {ing.name}
                     </Link>
+                    {ing.role === "rinse" && <span className="tag">rinse</span>}
+                    {ing.role === "float" && <span className="tag">float</span>}
+                    {!layer && !ing.role && toMl(ing.amount) === 0 && <span className="tag">solid</span>}
                     {ing.note && <span className="muted small"> · {ing.note}</span>}
                   </span>
                   {layer && (
@@ -154,7 +157,6 @@ export default function CocktailPage() {
                       <span className="pct">{Math.round(layer.fraction * 100)}%</span>
                     </span>
                   )}
-                  {!layer && toMl(ing.amount) === 0 && <span className="pct muted small">solid</span>}
                 </li>
               );
             })}

@@ -724,7 +724,7 @@ export const unforgettables: RecipeInput[] = [
     ice: "none",
     ingredients: [
       { id: "cognac", name: "Cognac (or rye whiskey)", amount: { value: 50, unit: "ml" }, category: "spirit", color: "#c8842e" },
-      { id: "absinthe", name: "Absinthe", amount: { value: 10, unit: "ml" }, category: "spirit", color: "#b7d96c", note: "Used to rinse the glass; the excess is discarded." },
+      { id: "absinthe", name: "Absinthe", amount: { value: 10, unit: "ml" }, category: "spirit", color: "#b7d96c", note: "Used to rinse the glass; the excess is discarded.", role: "rinse" },
       { id: "sugar-cube", name: "Sugar cube", amount: { value: 1, unit: "piece" }, category: "sweetener", color: "#f5efe0" },
       { id: "peychauds-bitters", name: "Peychaud's bitters", amount: { value: 2, unit: "dash" }, category: "bitters", color: "#c12a3c" },
     ],

@@ -13,7 +13,7 @@ export default function GlassesPage() {
           const used = recipes.search({ glass: g.id });
           return (
             <div key={g.id} className="card glass-card">
-              <div className="card-diagram" dangerouslySetInnerHTML={{ __html: glassToSvg(g, { width: 120 }) }} />
+              <div className="card-diagram" dangerouslySetInnerHTML={{ __html: glassToSvg(g, { height: 130 }) }} />
               <div className="card-body">
                 <h3>{g.name}</h3>
                 <p className="small muted">

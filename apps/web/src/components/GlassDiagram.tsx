@@ -6,7 +6,7 @@ interface Props {
   /** Ingredient id to emphasise (others fade). */
   highlight?: string | null;
   onHighlight?: (id: string | null) => void;
-  /** Pixel width; height follows the 2:3 viewBox. */
+  /** Optional explicit width; by default the size comes from CSS. */
   width?: number | string;
   /** Animate the pour when the recipe changes. */
   animate?: boolean;
@@ -36,7 +36,7 @@ function Ice({ shape }: { shape: IceShape }) {
   );
 }
 
-export default function GlassDiagram({ recipe, highlight, onHighlight, width = "100%", animate = true, className }: Props) {
+export default function GlassDiagram({ recipe, highlight, onHighlight, width, animate = true, className }: Props) {
   const d = useMemo(() => computeDiagram(recipe), [recipe]);
   const material = MATERIAL[d.glass.material ?? "glass"];
   const isMetal = d.glass.material && d.glass.material !== "glass";
@@ -50,7 +50,7 @@ export default function GlassDiagram({ recipe, highlight, onHighlight, width = "
       className={`glass-diagram ${className ?? ""}`}
       role="img"
       aria-label={`${recipe.name} in a ${d.glass.name}: ${d.layers.map((l) => `${l.ingredient.name} ${Math.round(l.fraction * 100)}%`).join(", ")}`}
-      style={{ aspectRatio: "2 / 3" }}
+      style={{ aspectRatio: `${d.bounds.width} / ${d.bounds.height}` }}
       onMouseLeave={() => onHighlight?.(null)}
     >
       <defs>

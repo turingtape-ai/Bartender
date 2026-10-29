@@ -56,7 +56,7 @@ export const openapi = {
       Amount: { type: "object", properties: { value: { type: "number" }, unit: { type: "string", enum: ["ml", "cl", "oz", "dash", "drop", "barspoon", "tsp", "piece", "top"] } }, required: ["value", "unit"] },
       Ingredient: {
         type: "object",
-        properties: { id: { type: "string" }, name: { type: "string" }, amount: { $ref: "#/components/schemas/Amount" }, category: { type: "string" }, color: { type: "string" }, optional: { type: "boolean" }, note: { type: "string" } },
+        properties: { id: { type: "string" }, name: { type: "string" }, amount: { $ref: "#/components/schemas/Amount" }, category: { type: "string" }, color: { type: "string" }, optional: { type: "boolean" }, role: { type: "string", enum: ["rinse", "float"] }, note: { type: "string" } },
         required: ["id", "name", "amount", "category", "color"],
       },
       Recipe: {

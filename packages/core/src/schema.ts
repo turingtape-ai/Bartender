@@ -97,8 +97,14 @@ export const IngredientSchema = z.object({
   category: z.enum(INGREDIENT_CATEGORIES),
   /** Colour used for this ingredient's layer in the glass diagram. */
   color: z.string().regex(/^#[0-9a-fA-F]{6}$/),
-  /** When true the ingredient is drawn as a thin accent rather than a layer. */
+  /** Optional ingredients are listed but may be left out. */
   optional: z.boolean().optional(),
+  /**
+   * How the ingredient is used, when it is not simply poured in:
+   * "rinse" coats the glass and is discarded (no volume in the diagram),
+   * "float" is layered on top at the end.
+   */
+  role: z.enum(["rinse", "float"]).optional(),
   note: z.string().optional(),
 });
 export type Ingredient = z.infer<typeof IngredientSchema>;

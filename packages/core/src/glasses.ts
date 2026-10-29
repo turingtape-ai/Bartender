@@ -186,14 +186,14 @@ export const GLASSES: Record<GlassId, GlassSpec> = {
   rocks: {
     id: "rocks",
     name: "Old fashioned glass",
-    description: "Short, heavy-bottomed tumbler (rocks / lowball) for drinks built over ice.",
+    description: "Short, heavy-bottomed tumbler (rocks / lowball), about as wide as it is tall, for drinks built over ice or served neat.",
     capacityMl: 300,
     bowl: [
-      { y: 232, r: 48 },
-      { y: 62, r: 56 },
+      { y: 246, r: 52 },
+      { y: 150, r: 58 },
     ],
     wall: 4,
-    base: 22,
+    base: 16,
   },
   highball: {
     id: "highball",
@@ -201,8 +201,8 @@ export const GLASSES: Record<GlassId, GlassSpec> = {
     description: "Tall straight tumbler for long drinks topped with soda or juice.",
     capacityMl: 350,
     bowl: [
-      { y: 262, r: 34 },
-      { y: 32, r: 37 },
+      { y: 254, r: 37 },
+      { y: 52, r: 41 },
     ],
     wall: 3,
     base: 12,
@@ -213,8 +213,8 @@ export const GLASSES: Record<GlassId, GlassSpec> = {
     description: "Taller and narrower than a highball; made for the Collins family and fizzes.",
     capacityMl: 400,
     bowl: [
-      { y: 272, r: 31 },
-      { y: 22, r: 33 },
+      { y: 262, r: 33 },
+      { y: 32, r: 36 },
     ],
     wall: 3,
     base: 10,
@@ -263,12 +263,12 @@ export const GLASSES: Record<GlassId, GlassSpec> = {
     description: "The Moscow Mule's signature vessel; the metal keeps the drink ice cold.",
     capacityMl: 400,
     bowl: [
-      { y: 246, r: 46 },
-      { y: 52, r: 52 },
+      { y: 254, r: 50 },
+      { y: 96, r: 54 },
     ],
     wall: 4,
     base: 8,
-    handle: { top: 90, bottom: 200, reach: 30 },
+    handle: { top: 120, bottom: 220, reach: 28 },
     material: "copper",
   },
   "irish-coffee": {
@@ -313,9 +313,9 @@ export const GLASSES: Record<GlassId, GlassSpec> = {
     description: "Silver or pewter cup that frosts over when packed with crushed ice.",
     capacityMl: 350,
     bowl: [
-      { y: 240, r: 34 },
-      { y: 70, r: 44 },
-      { y: 58, r: 46 },
+      { y: 252, r: 36 },
+      { y: 104, r: 46 },
+      { y: 92, r: 48 },
     ],
     wall: 3,
     base: 8,
@@ -361,12 +361,12 @@ export const GLASSES: Record<GlassId, GlassSpec> = {
     description: "Small handled cup, traditional for punches and rum drinks.",
     capacityMl: 250,
     bowl: [
-      { y: 226, r: 34 },
-      { y: 100, r: 44 },
+      { y: 252, r: 36 },
+      { y: 130, r: 44 },
     ],
     wall: 3,
     base: 8,
-    handle: { top: 120, bottom: 200, reach: 26 },
+    handle: { top: 150, bottom: 230, reach: 26 },
   },
 };
 

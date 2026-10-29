@@ -26,7 +26,8 @@ const ICE_SHARE: Record<IceStyle, number> = {
   sphere: 0.22,
 };
 
-const MIN_FILL = 0.62;
+/** A neat pour in a tumbler should look like one, so the floor is low; the ceiling avoids overflowing rims. */
+const MIN_FILL = 0.2;
 const MAX_FILL = 0.9;
 
 export interface DiagramLayer {
@@ -52,10 +53,19 @@ export interface IceShape {
   rotation: number;
 }
 
+export interface Bounds {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 export interface Diagram {
   glass: GlassSpec;
   profile: ProfilePoint[];
+  /** Tight viewBox around the glass, so short tumblers are not dwarfed by empty space. */
   viewBox: string;
+  bounds: Bounds;
   layers: DiagramLayer[];
   /** Ingredients that do not contribute volume (garnish-like, pieces). */
   solids: Ingredient[];
@@ -78,6 +88,8 @@ export interface GlassPaths {
   handle?: string;
   rimY: number;
   rimR: number;
+  /** Bounding box of everything drawn, with a little padding. */
+  bounds: Bounds;
 }
 
 /* ------------------------------------------------------------------ */
@@ -142,7 +154,18 @@ export function glassPaths(spec: GlassSpec): GlassPaths {
     handle = `M ${fmt(xTop)},${fmt(h.top)} C ${fmt(reach + 8)},${fmt(h.top)} ${fmt(reach + 8)},${fmt(h.bottom)} ${fmt(xBottom)},${fmt(h.bottom)} L ${fmt(xBottom)},${fmt(h.bottom - 10)} C ${fmt(reach - 4)},${fmt(h.bottom - 12)} ${fmt(reach - 4)},${fmt(h.top + 12)} ${fmt(xTop)},${fmt(h.top + 10)} Z`;
   }
 
-  return { body, bowl, bowlPoints, stem, foot, handle, rimY: rim.y, rimR: rim.r };
+  const pad = 6;
+  const maxR = Math.max(...outer.map((p) => p.r), spec.foot?.r ?? 0, baseHalf);
+  const right = spec.handle ? maxR + spec.handle.reach + 12 : maxR;
+  const lowest = spec.stem && spec.foot ? spec.stem.toY + spec.foot.height : baseY;
+  const bounds: Bounds = {
+    x: CENTER_X - maxR - pad,
+    y: rim.y - pad,
+    width: maxR + right + pad * 2,
+    height: lowest - rim.y + pad * 2,
+  };
+
+  return { body, bowl, bowlPoints, stem, foot, handle, rimY: rim.y, rimR: rim.r, bounds };
 }
 
 /* ------------------------------------------------------------------ */
@@ -209,8 +232,9 @@ export function computeDiagram(recipe: Recipe): Diagram {
   const capacityUnits = profileVolume(profile);
   const unitsPerMl = capacityUnits / glass.capacityMl;
 
-  const liquids = recipe.ingredients.filter((i) => toMl(i.amount) > 0);
-  const solids = recipe.ingredients.filter((i) => toMl(i.amount) <= 0);
+  const pours = (i: Ingredient) => toMl(i.amount) > 0 && i.role !== "rinse";
+  const liquids = recipe.ingredients.filter(pours);
+  const solids = recipe.ingredients.filter((i) => !pours(i));
   const totalMl = liquids.reduce((s, i) => s + toMl(i.amount), 0);
 
   // Where the surface sits: drink + dilution + ice, clamped to a plausible pour.
@@ -239,17 +263,20 @@ export function computeDiagram(recipe: Recipe): Diagram {
     accMl += ml;
   }
   const liquidTopY = layers.length ? layers[layers.length - 1].yTop : bottomY;
+  const paths = glassPaths(glass);
+  const b = paths.bounds;
 
   return {
     glass,
     profile,
-    viewBox: `0 0 ${VIEWBOX.width} ${VIEWBOX.height}`,
+    viewBox: `${fmt(b.x)} ${fmt(b.y)} ${fmt(b.width)} ${fmt(b.height)}`,
+    bounds: b,
     layers,
     solids,
     totalMl,
     liquidTopY,
     ice: iceShapes(recipe.ice, profile, liquidTopY, bottomY),
-    paths: glassPaths(glass),
+    paths,
   };
 }
 
@@ -297,15 +324,17 @@ export function diagramToSvg(diagram: Diagram, opts: SvgOptions = {}): string {
   const textColor = opts.textColor ?? "#1f2937";
   const material = MATERIAL_FILL[diagram.glass.material ?? "glass"];
   const isMetal = diagram.glass.material && diagram.glass.material !== "glass";
-  const labelWidth = labels ? 200 : 0;
-  const vbW = VIEWBOX.width + labelWidth;
-  const height = Math.round((width * VIEWBOX.height) / vbW);
+  const b = diagram.bounds;
+  const labelWidth = labels ? 150 : 0;
+  const vbW = b.width + labelWidth;
+  const vbH = Math.max(b.height, labels ? diagram.layers.length * 14 + 20 : 0);
+  const height = Math.round((width * vbH) / vbW);
   const clipId = `bowl-${diagram.glass.id}`;
 
   const parts: string[] = [];
-  parts.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${vbW} ${VIEWBOX.height}" width="${width}" height="${height}" role="img" aria-label="Glass diagram">`);
+  parts.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${fmt(b.x)} ${fmt(b.y)} ${fmt(vbW)} ${fmt(vbH)}" width="${width}" height="${height}" role="img" aria-label="Glass diagram">`);
   if (opts.background && opts.background !== "none") {
-    parts.push(`<rect width="100%" height="100%" fill="${esc(opts.background)}"/>`);
+    parts.push(`<rect x="${fmt(b.x)}" y="${fmt(b.y)}" width="${fmt(vbW)}" height="${fmt(vbH)}" fill="${esc(opts.background)}"/>`);
   }
   parts.push(`<defs><clipPath id="${clipId}"><polygon points="${diagram.paths.bowlPoints}"/></clipPath></defs>`);
 
@@ -334,9 +363,9 @@ export function diagramToSvg(diagram: Diagram, opts: SvgOptions = {}): string {
   }
 
   if (labels) {
-    const x0 = VIEWBOX.width + 8;
+    const x0 = b.x + b.width + 4;
     const minGap = 14;
-    let lastY = -Infinity;
+    let lastY = b.y + 4;
     const placed = [...diagram.layers].reverse().map((layer) => {
       let y = Math.max(layer.labelY, lastY + minGap);
       lastY = y;
@@ -355,13 +384,14 @@ export function diagramToSvg(diagram: Diagram, opts: SvgOptions = {}): string {
 }
 
 /** Render just the empty glass (for the glass gallery). */
-export function glassToSvg(spec: GlassSpec, opts: { width?: number } = {}): string {
+export function glassToSvg(spec: GlassSpec, opts: { width?: number; height?: number } = {}): string {
   const paths = glassPaths(spec);
   const material = MATERIAL_FILL[spec.material ?? "glass"];
-  const width = opts.width ?? 160;
-  const height = Math.round((width * VIEWBOX.height) / VIEWBOX.width);
+  const b = paths.bounds;
+  const height = opts.height ?? 160;
+  const width = opts.width ?? Math.round((height * b.width) / b.height);
   const parts = [
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${VIEWBOX.width} ${VIEWBOX.height}" width="${width}" height="${height}" role="img" aria-label="${esc(spec.name)}">`,
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${fmt(b.x)} ${fmt(b.y)} ${fmt(b.width)} ${fmt(b.height)}" width="${width}" height="${opts.width ? Math.round((width * b.height) / b.width) : height}" role="img" aria-label="${esc(spec.name)}">`,
     `<path d="${paths.body}" fill="${material.fill}" stroke="${material.stroke}" stroke-width="2" stroke-linejoin="round"/>`,
   ];
   if (paths.stem) parts.push(`<path d="${paths.stem}" fill="${material.fill}" stroke="${material.stroke}" stroke-width="2"/>`);

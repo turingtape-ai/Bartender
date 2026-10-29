@@ -28,7 +28,7 @@ function recipeToText(r: Recipe): string {
     `Glass: ${getGlass(r.glass).name} · Method: ${r.method} · Ice: ${r.ice}`,
     "",
     "## Ingredients",
-    ...r.ingredients.map((i) => `- ${formatAmount(i.amount, "ml")} ${i.name}${i.note ? ` (${i.note})` : ""}`),
+    ...r.ingredients.map((i) => `- ${formatAmount(i.amount, "ml")} ${i.name}${i.role ? ` [${i.role}]` : ""}${i.note ? ` (${i.note})` : ""}`),
     "",
     "## Method",
     ...r.steps.map((s, n) => `${n + 1}. ${s}`),

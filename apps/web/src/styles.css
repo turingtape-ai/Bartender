@@ -280,8 +280,9 @@ a.card:hover {
   background: linear-gradient(180deg, color-mix(in srgb, var(--accent-soft) 45%, transparent), transparent);
 }
 .card-diagram svg {
-  width: 110px;
-  height: auto;
+  height: 150px;
+  width: auto;
+  max-width: 100%;
 }
 .card-body {
   padding: 0.6rem 1rem 1rem;
@@ -357,6 +358,12 @@ a.card:hover {
   display: block;
   width: 100%;
   height: auto;
+}
+.diagram-panel .glass-diagram {
+  width: auto;
+  max-width: 100%;
+  height: min(62vh, 460px);
+  margin: 0 auto;
 }
 .glass-diagram .layer {
   transition: fill-opacity 0.2s ease, stroke 0.2s ease;
@@ -463,6 +470,18 @@ a.card:hover {
 }
 .ingredient .name a {
   color: inherit;
+}
+.tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0 0.4rem;
+  margin-left: 0.4rem;
+  vertical-align: middle;
 }
 .ingredient .share {
   display: flex;
@@ -588,7 +607,8 @@ a.card:hover {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
 .glass-card .card-diagram svg {
-  width: 100px;
+  height: 130px;
+  width: auto;
 }
 
 /* Prose */
