@@ -340,9 +340,15 @@ a.card:hover {
   .cocktail-layout {
     grid-template-columns: 1fr;
   }
-  .diagram-panel {
-    max-width: 320px;
+  /* Higher specificity on purpose: the sticky rule below would otherwise win. */
+  .cocktail-layout .diagram-panel {
+    position: static;
+    top: auto;
+    max-width: 360px;
     margin: 0 auto;
+  }
+  .cocktail-layout .diagram-panel .glass-diagram {
+    height: min(48vh, 360px);
   }
 }
 .diagram-panel {
