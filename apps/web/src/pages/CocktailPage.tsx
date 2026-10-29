@@ -109,7 +109,7 @@ export default function CocktailPage() {
 
       <div className="cocktail-layout">
         <section className="diagram-panel" aria-label="Glass diagram">
-          <GlassDiagram recipe={recipe} highlight={highlight} onHighlight={setHighlight} />
+          <GlassDiagram recipe={recipe} highlight={highlight} onHighlight={setHighlight} formatAmount={(ing) => formatAmount(ing.amount, unit, servings)} />
           {selected ? (
             <p className="selected-layer center" aria-live="polite">
               <span className="swatch" style={{ background: selected.ingredient.color }} aria-hidden="true" />
@@ -121,7 +121,7 @@ export default function CocktailPage() {
             </p>
           ) : (
             <p className="muted small center">
-              Tap a layer to see what it is. Each band's volume matches its share of the {Math.round(diagram.totalMl)} ml recipe in a real{" "}
+              Tap a layer, or one of the dots beside the glass, to see what it is. Each band's volume matches its share of the {Math.round(diagram.totalMl)} ml recipe in a real{" "}
               {glass.name.toLowerCase()}.
             </p>
           )}

@@ -389,11 +389,20 @@ a.card:hover {
 .glass-diagram .layer {
   transition: fill-opacity 0.2s ease, stroke 0.2s ease;
 }
-.glass-diagram .layer.interactive {
+.glass-diagram .hit,
+.glass-diagram .handle {
   cursor: pointer;
 }
-.glass-diagram .layer:focus {
+.glass-diagram .hit:focus {
   outline: none;
+}
+.glass-diagram .hit:focus-visible {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 2;
+}
+.glass-diagram .tooltip text {
+  font-family: ui-sans-serif, system-ui, sans-serif;
 }
 .glass-diagram .pour {
   transform-box: fill-box;
