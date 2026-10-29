@@ -413,10 +413,6 @@ a.card:hover {
     animation: none;
   }
 }
-.callout text {
-  font-family: ui-sans-serif, system-ui, sans-serif;
-  font-weight: 600;
-}
 .panel-head {
   display: flex;
   align-items: center;

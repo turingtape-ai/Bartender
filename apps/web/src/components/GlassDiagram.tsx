@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { CENTER_X, computeDiagram, radiusAt, type IceShape, type Recipe } from "@bartender/core";
+import { CENTER_X, computeDiagram, type IceShape, type Recipe } from "@bartender/core";
 
 interface Props {
   recipe: Recipe;
@@ -108,20 +108,6 @@ export default function GlassDiagram({ recipe, highlight, onHighlight, width, an
       <path d={d.paths.bowl} fill="none" stroke={material.stroke} strokeWidth={1.5} strokeOpacity={0.7} />
       {!isMetal && <ellipse cx={CENTER_X} cy={d.paths.rimY} rx={d.paths.rimR + d.glass.wall} ry={4} fill="none" stroke={material.stroke} strokeWidth={1.5} strokeOpacity={0.6} />}
 
-      {highlight &&
-        d.layers
-          .filter((l) => l.ingredient.id === highlight)
-          .map((l) => {
-            const x = CENTER_X + radiusAt(d.profile, l.labelY) + d.glass.wall + 4;
-            return (
-              <g key="callout" className="callout">
-                <line x1={x} y1={l.labelY} x2={x + 10} y2={l.labelY} stroke="var(--ink)" strokeWidth={1} />
-                <text x={x + 13} y={l.labelY + 3.5} fontSize={9} fill="var(--ink)">
-                  {Math.round(l.fraction * 100)}%
-                </text>
-              </g>
-            );
-          })}
     </svg>
   );
 }
