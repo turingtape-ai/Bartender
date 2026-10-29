@@ -75,6 +75,7 @@ export default function CocktailPage() {
       return next;
     });
   const progress = Math.round((done.size / recipe.steps.length) * 100);
+  const selected = highlight ? diagram.layers.find((l) => l.ingredient.id === highlight) : undefined;
   const totalMl = diagram.totalMl * servings;
 
   return (
@@ -109,9 +110,21 @@ export default function CocktailPage() {
       <div className="cocktail-layout">
         <section className="diagram-panel" aria-label="Glass diagram">
           <GlassDiagram recipe={recipe} highlight={highlight} onHighlight={setHighlight} />
-          <p className="muted small center">
-            Hover or tap a layer. Each band's volume matches its share of the {Math.round(diagram.totalMl)} ml recipe in a real {glass.name.toLowerCase()}.
-          </p>
+          {selected ? (
+            <p className="selected-layer center" aria-live="polite">
+              <span className="swatch" style={{ background: selected.ingredient.color }} aria-hidden="true" />
+              <strong>{selected.ingredient.name}</strong>
+              <span className="muted">
+                {" "}
+                · {formatAmount(selected.ingredient.amount, unit, servings)} · {Math.round(selected.fraction * 100)}% of the drink
+              </span>
+            </p>
+          ) : (
+            <p className="muted small center">
+              Tap a layer to see what it is. Each band's volume matches its share of the {Math.round(diagram.totalMl)} ml recipe in a real{" "}
+              {glass.name.toLowerCase()}.
+            </p>
+          )}
         </section>
 
         <section className="recipe-panel">
@@ -129,7 +142,12 @@ export default function CocktailPage() {
               </button>
             </div>
           </div>
-          <ul className="ingredient-list" onMouseLeave={() => setHighlight(null)}>
+          <ul
+            className="ingredient-list"
+            onPointerLeave={(e) => {
+              if (e.pointerType === "mouse") setHighlight(null);
+            }}
+          >
             {recipe.ingredients.map((ing) => {
               const layer = diagram.layers.find((l) => l.ingredient.id === ing.id);
               const active = highlight === ing.id;
@@ -137,7 +155,9 @@ export default function CocktailPage() {
                 <li
                   key={ing.id}
                   className={`ingredient ${active ? "active" : ""} ${highlight && !active ? "dim" : ""}`}
-                  onMouseEnter={() => setHighlight(ing.id)}
+                  onPointerEnter={(e) => {
+                    if (e.pointerType === "mouse") setHighlight(ing.id);
+                  }}
                   onClick={() => setHighlight(active ? null : ing.id)}
                 >
                   <span className="swatch" style={{ background: ing.color }} aria-hidden="true" />

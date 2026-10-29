@@ -51,7 +51,9 @@ export default function GlassDiagram({ recipe, highlight, onHighlight, width, an
       role="img"
       aria-label={`${recipe.name} in a ${d.glass.name}: ${d.layers.map((l) => `${l.ingredient.name} ${Math.round(l.fraction * 100)}%`).join(", ")}`}
       style={{ aspectRatio: `${d.bounds.width} / ${d.bounds.height}` }}
-      onMouseLeave={() => onHighlight?.(null)}
+      onPointerLeave={(e) => {
+        if (e.pointerType === "mouse") onHighlight?.(null);
+      }}
     >
       <defs>
         <clipPath id={clipId}>
@@ -79,8 +81,15 @@ export default function GlassDiagram({ recipe, highlight, onHighlight, width, an
                 stroke={hot ? "var(--ink)" : "rgba(255,255,255,0.7)"}
                 strokeWidth={hot ? 1.6 : 1}
                 className={`layer ${interactive ? "interactive" : ""}`}
-                onMouseEnter={() => onHighlight?.(id)}
-                onFocus={() => onHighlight?.(id)}
+                // Hover is mouse-only: a tap fires a synthetic mouseenter *and* a click,
+                // which would select and immediately deselect the layer.
+                onPointerEnter={(e) => {
+                  if (e.pointerType === "mouse") onHighlight?.(id);
+                }}
+                // Keyboard focus only; a tap also focuses the element just before its click.
+                onFocus={(e) => {
+                  if (e.currentTarget.matches(":focus-visible")) onHighlight?.(id);
+                }}
                 onClick={() => onHighlight?.(hot ? null : id)}
                 tabIndex={interactive ? 0 : undefined}
               >

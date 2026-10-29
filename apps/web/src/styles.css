@@ -360,6 +360,21 @@ a.card:hover {
   padding: 1rem;
   box-shadow: var(--shadow);
 }
+.selected-layer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.6rem 0 0;
+  font-size: 0.95rem;
+}
+.selected-layer .swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
 .glass-diagram {
   display: block;
   width: 100%;
