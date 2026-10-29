@@ -48,6 +48,11 @@ npm test               # core tests: schema validation of every recipe, geometry
 npm run typecheck
 ```
 
+## Static deployment (GitHub Pages)
+
+`npm run build:pages` (with `VITE_BASE=/<repo>/`) produces a hash-routed bundle that needs no
+server; `.github/workflows/pages.yml` builds and publishes it to GitHub Pages on every push.
+
 ## REST API
 
 ```

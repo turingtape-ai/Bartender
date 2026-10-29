@@ -16,7 +16,8 @@
     "start": "npm run start -w @bartender/api",
     "test": "npm run test -w @bartender/core",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "lint": "npm run typecheck"
+    "lint": "npm run typecheck",
+    "build:pages": "npm run build -w @bartender/core && VITE_ROUTER=hash vite build --config apps/web/vite.config.ts apps/web"
   },
   "engines": {
     "node": ">=20"
