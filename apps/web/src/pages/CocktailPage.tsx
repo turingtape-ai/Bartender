@@ -186,12 +186,8 @@ export default function CocktailPage() {
             About {Math.round(totalMl)} ml before dilution{servings > 1 ? ` for ${servings} drinks` : ""}. Garnish: {recipe.garnish}.
           </p>
 
-          {recipe.id === "aviation" && (
-            <>
-              <h2>Watch it being made</h2>
-              <MakeAnimation recipe={recipe} />
-            </>
-          )}
+          <h2>Watch it being made</h2>
+          <MakeAnimation recipe={recipe} />
 
           <div className="panel-head">
             <h2>Method</h2>

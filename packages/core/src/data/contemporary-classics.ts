@@ -241,7 +241,7 @@ export const contemporaryClassics: RecipeInput[] = [
       { id: "gin", name: "Gin", amount: { value: 30, unit: "ml" }, category: "spirit", color: "#dfe9f2" },
       { id: "lemon-juice", name: "Fresh lemon juice", amount: { value: 15, unit: "ml" }, category: "juice", color: "#f4e46a" },
       { id: "simple-syrup", name: "Simple syrup", amount: { value: 2, unit: "dash" }, category: "syrup", color: "#f1ead9" },
-      { id: "champagne", name: "Champagne", amount: { value: 60, unit: "ml" }, category: "wine", color: "#f3e5a6" },
+      { id: "champagne", name: "Champagne", amount: { value: 60, unit: "top" }, category: "wine", color: "#f3e5a6" },
     ],
     garnish: "Lemon twist (optional)",
     steps: [
