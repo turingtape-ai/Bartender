@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { CATEGORIES, CATEGORY_LABELS, GLASSES, GLASS_IDS, recipes, type Category, type GlassId } from "@bartender/core";
 import CocktailCard from "../components/CocktailCard";
 
@@ -43,7 +43,7 @@ export default function HomePage() {
         <h1>The IBA cocktails, drawn to scale.</h1>
         <p className="lede">
           Every official IBA recipe with step-by-step instructions and a diagram of the glass showing how much of each ingredient goes in. Start with the{" "}
-          <a href="/cocktails/aviation">Aviation</a>.
+          <Link to="/cocktails/aviation">Aviation</Link>.
         </p>
       </section>
 

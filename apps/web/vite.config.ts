@@ -3,6 +3,8 @@ import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "node:url";
 
 export default defineConfig({
+  // VITE_BASE="./" produces a relocatable build for static hosts (pair with VITE_ROUTER=hash).
+  base: process.env.VITE_BASE ?? "/",
   plugins: [react()],
   resolve: {
     alias: {

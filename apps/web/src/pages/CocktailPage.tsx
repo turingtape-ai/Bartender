@@ -227,10 +227,12 @@ export default function CocktailPage() {
 
           <h2>Use this recipe elsewhere</h2>
           <ul className="links small">
+            {import.meta.env.VITE_ROUTER !== "hash" && (
             <li>
               <a href={`/api/cocktails/${recipe.id}`}>JSON</a> · <a href={`/api/cocktails/${recipe.id}/diagram.svg`}>diagram SVG</a> ·{" "}
               <a href={`/api/cocktails/${recipe.id}/diagram.json`}>diagram data</a>
             </li>
+            )}
             <li>
               MCP: <code>get_cocktail {`{ "id": "${recipe.id}" }`}</code>
             </li>
